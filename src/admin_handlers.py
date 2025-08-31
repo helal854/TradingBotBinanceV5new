@@ -16,7 +16,7 @@ from .keyboards import *
 from .database import db_manager
 from .signal_parser import signal_parser
 from .monitoring import bot_monitor
-from config.config import ADMIN_USER_ID, SYSTEM_MESSAGES
+from config.config import ADMIN_USER_ID, MESSAGES
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ async def show_admin_panel(callback: CallbackQuery):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer()
@@ -71,7 +71,7 @@ async def show_detailed_stats(callback: CallbackQuery):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer("جاري جلب الإحصائيات...")
@@ -116,7 +116,7 @@ async def show_user_management(callback: CallbackQuery):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer()
@@ -145,7 +145,7 @@ async def add_user_prompt(callback: CallbackQuery, state: FSMContext):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer()
@@ -178,7 +178,7 @@ async def process_add_user(message: Message, state: FSMContext):
         admin_id = message.from_user.id
         
         if admin_id != ADMIN_USER_ID:
-            await message.answer(SYSTEM_MESSAGES["admin_only"])
+            await message.answer(MESSAGES["admin_only"])
             return
         
         try:
@@ -244,7 +244,7 @@ async def remove_user_prompt(callback: CallbackQuery, state: FSMContext):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer()
@@ -272,7 +272,7 @@ async def process_remove_user(message: Message, state: FSMContext):
         admin_id = message.from_user.id
         
         if admin_id != ADMIN_USER_ID:
-            await message.answer(SYSTEM_MESSAGES["admin_only"])
+            await message.answer(MESSAGES["admin_only"])
             return
         
         try:
@@ -338,7 +338,7 @@ async def list_allowed_users(callback: CallbackQuery):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer("جاري جلب قائمة المستخدمين...")
@@ -396,7 +396,7 @@ async def broadcast_prompt(callback: CallbackQuery, state: FSMContext):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer()
@@ -436,7 +436,7 @@ async def process_broadcast(message: Message, state: FSMContext):
         admin_id = message.from_user.id
         
         if admin_id != ADMIN_USER_ID:
-            await message.answer(SYSTEM_MESSAGES["admin_only"])
+            await message.answer(MESSAGES["admin_only"])
             return
         
         broadcast_message = message.text
@@ -470,7 +470,7 @@ async def confirm_broadcast(callback: CallbackQuery, state: FSMContext):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         # الحصول على الرسالة من الحالة
@@ -559,7 +559,7 @@ async def show_admin_settings(callback: CallbackQuery):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer()
@@ -597,7 +597,7 @@ async def show_admin_logs(callback: CallbackQuery):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer("جاري جلب السجلات...")
@@ -644,7 +644,7 @@ async def quick_stats(message: Message):
         user_id = message.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await message.answer(SYSTEM_MESSAGES["admin_only"])
+            await message.answer(MESSAGES["admin_only"])
             return
         
         stats = await db_manager.get_stats()
@@ -670,7 +670,7 @@ async def quick_users_count(message: Message):
         user_id = message.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await message.answer(SYSTEM_MESSAGES["admin_only"])
+            await message.answer(MESSAGES["admin_only"])
             return
         
         allowed_users = await db_manager.get_allowed_users()
@@ -689,7 +689,7 @@ async def show_system_monitoring(callback: CallbackQuery):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer("جاري جلب بيانات المراقبة...")
@@ -721,7 +721,7 @@ async def refresh_monitoring_data(callback: CallbackQuery):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer("جاري تحديث البيانات...")
@@ -753,7 +753,7 @@ async def quick_monitor(message: Message):
         user_id = message.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await message.answer(SYSTEM_MESSAGES["admin_only"])
+            await message.answer(MESSAGES["admin_only"])
             return
         
         # الحصول على إحصائيات سريعة
