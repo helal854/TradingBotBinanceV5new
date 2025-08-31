@@ -281,6 +281,7 @@ class APIManager:
     
     def __init__(self, binance_api_key: str, binance_secret_key: str):
         self.binance = BinanceAPIClient(binance_api_key, binance_secret_key)
+        self.binance_client = self.binance  # إضافة مرجع للتوافق
         self.coingecko = CoinGeckoAPIClient()
         self.fear_greed = FearGreedAPIClient()
         self.trading_economics = TradingEconomicsAPIClient()

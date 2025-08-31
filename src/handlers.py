@@ -54,7 +54,7 @@ async def cmd_start(message: Message):
         
         # إرسال رسالة الترحيب
         await message.answer(
-            SYSTEM_MESSAGES["welcome"],
+            MESSAGES["welcome"],
             reply_markup=get_main_keyboard()
         )
         
@@ -83,7 +83,7 @@ async def show_signals(callback: CallbackQuery):
             )
         else:
             await callback.message.edit_text(
-                SYSTEM_MESSAGES["no_signals"],
+                MESSAGES["no_signals"],
                 reply_markup=get_back_keyboard()
             )
             
@@ -109,7 +109,7 @@ async def show_market_news(callback: CallbackQuery):
             )
         else:
             await callback.message.edit_text(
-                SYSTEM_MESSAGES["market_data_error"],
+                MESSAGES["market_data_error"],
                 reply_markup=get_back_keyboard()
             )
             
@@ -136,7 +136,7 @@ async def show_economic_schedule(callback: CallbackQuery):
             )
         else:
             await callback.message.edit_text(
-                SYSTEM_MESSAGES["schedule_data_error"],
+                MESSAGES["schedule_data_error"],
                 reply_markup=get_back_keyboard()
             )
             
@@ -234,7 +234,7 @@ async def show_top_traders(callback: CallbackQuery):
             )
         else:
             await callback.message.edit_text(
-                SYSTEM_MESSAGES.get("top_traders_error", "❌ خطأ في جلب بيانات المتداولين"),
+                MESSAGES.get("top_traders_error", "❌ خطأ في جلب بيانات المتداولين"),
                 reply_markup=get_back_keyboard()
             )
             
@@ -326,7 +326,7 @@ async def back_to_main_menu(callback: CallbackQuery):
     try:
         await callback.answer()
         await callback.message.edit_text(
-            SYSTEM_MESSAGES["welcome"],
+            MESSAGES["welcome"],
             reply_markup=get_main_keyboard(),
             parse_mode="Markdown"
         )
@@ -339,7 +339,7 @@ async def refresh_data(callback: CallbackQuery):
     try:
         await callback.answer("جاري تحديث البيانات...")
         await callback.message.edit_text(
-            SYSTEM_MESSAGES["welcome"],
+            MESSAGES["welcome"],
             reply_markup=get_main_keyboard(),
             parse_mode="Markdown"
         )
@@ -354,7 +354,7 @@ async def admin_panel(message: Message):
         user_id = message.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await message.answer(SYSTEM_MESSAGES["admin_only"])
+            await message.answer(MESSAGES["admin_only"])
             return
         
         stats = await db_manager.get_stats()
@@ -385,7 +385,7 @@ async def admin_send_signal(callback: CallbackQuery, state: FSMContext):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         await callback.answer()
@@ -429,7 +429,7 @@ async def process_new_signal(message: Message, state: FSMContext):
         user_id = message.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await message.answer(SYSTEM_MESSAGES["admin_only"])
+            await message.answer(MESSAGES["admin_only"])
             return
         
         signal_text = message.text
@@ -489,7 +489,7 @@ async def confirm_send_signal(callback: CallbackQuery, state: FSMContext):
         user_id = callback.from_user.id
         
         if user_id != ADMIN_USER_ID:
-            await callback.answer(SYSTEM_MESSAGES["admin_only"], show_alert=True)
+            await callback.answer(MESSAGES["admin_only"], show_alert=True)
             return
         
         # الحصول على بيانات الإشارة
@@ -638,7 +638,7 @@ async def format_market_message(market_data: Dict) -> str:
         
     except Exception as e:
         logger.error(f"خطأ في تنسيق رسالة السوق: {e}")
-        return SYSTEM_MESSAGES["market_data_error"]
+        return MESSAGES["market_data_error"]
 
 async def format_economic_schedule_message(economic_events: List[Dict]) -> str:
     """تنسيق رسالة الأجندة الاقتصادية"""
@@ -710,5 +710,5 @@ async def format_economic_schedule_message(economic_events: List[Dict]) -> str:
         
     except Exception as e:
         logger.error(f"خطأ في تنسيق رسالة الأجندة الاقتصادية: {e}")
-        return SYSTEM_MESSAGES["schedule_data_error"]
+        return MESSAGES["schedule_data_error"]
 

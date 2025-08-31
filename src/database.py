@@ -313,6 +313,57 @@ class DatabaseManager:
             logger.error(f"خطأ في الحصول على الإحصائيات: {e}")
             return {}
 
+    async def get_detailed_stats(self) -> Dict:
+        """الحصول على إحصائيات مفصلة للنظام"""
+        try:
+            async with aiosqlite.connect(self.db_path) as db:
+                stats = {}
+                
+                # إحصائيات المستخدمين
+                cursor = await db.execute("SELECT COUNT(*) FROM users")
+                stats['total_users'] = (await cursor.fetchone())[0]
+                
+                cursor = await db.execute("SELECT COUNT(*) FROM allowed_users")
+                stats['allowed_users'] = (await cursor.fetchone())[0]
+                
+                cursor = await db.execute("SELECT COUNT(*) FROM allowed_users WHERE is_premium = 1")
+                stats['premium_users'] = (await cursor.fetchone())[0]
+                
+                # إحصائيات الإشارات
+                cursor = await db.execute("SELECT COUNT(*) FROM signals")
+                stats['total_signals'] = (await cursor.fetchone())[0]
+                
+                cursor = await db.execute("SELECT COUNT(*) FROM signals WHERE is_active = 1")
+                stats['active_signals'] = (await cursor.fetchone())[0]
+                
+                cursor = await db.execute("SELECT COUNT(*) FROM signals WHERE created_date >= date('now', '-7 days')")
+                stats['signals_last_week'] = (await cursor.fetchone())[0]
+                
+                cursor = await db.execute("SELECT COUNT(*) FROM signals WHERE created_date >= date('now', '-30 days')")
+                stats['signals_last_month'] = (await cursor.fetchone())[0]
+                
+                # إحصائيات النشاط
+                cursor = await db.execute("SELECT COUNT(*) FROM users WHERE last_activity >= datetime('now', '-24 hours')")
+                stats['active_users_24h'] = (await cursor.fetchone())[0]
+                
+                cursor = await db.execute("SELECT COUNT(*) FROM users WHERE last_activity >= datetime('now', '-7 days')")
+                stats['active_users_week'] = (await cursor.fetchone())[0]
+                
+                # أحدث إشارة
+                cursor = await db.execute("SELECT symbol, direction, created_date FROM signals ORDER BY created_date DESC LIMIT 1")
+                latest_signal = await cursor.fetchone()
+                if latest_signal:
+                    stats['latest_signal'] = {
+                        'symbol': latest_signal[0],
+                        'type': latest_signal[1],
+                        'date': latest_signal[2]
+                    }
+                
+                return stats
+        except Exception as e:
+            logger.error(f"خطأ في الحصول على الإحصائيات المفصلة: {e}")
+            return {}
+
 # إنشاء مثيل عام لإدارة قاعدة البيانات
 db_manager = DatabaseManager()
 
