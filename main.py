@@ -13,11 +13,12 @@ from aiogram.fsm.storage.memory import MemoryStorage
 # إضافة مسار المشروع
 sys.path.append(str(Path(__file__).parent))
 
-from config.config import BOT_TOKEN, LOGGING_CONFIG, ADMIN_USER_ID
+from config.config import BOT_TOKEN, ADMIN_USER_ID
 from src.database import db_manager
 from src.handlers import router
 from src.admin_handlers import admin_router
-from src.api_clients import APIManager, BINANCE_API_KEY, BINANCE_SECRET_KEY
+from src.api_clients import APIManager
+from config.config import BINANCE_API_KEY, BINANCE_SECRET_KEY
 
 # إعداد التسجيل
 logging.basicConfig(
