@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 from aiogram import Bot, Dispatcher
-from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
@@ -33,11 +32,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # إنشاء البوت والموزع
-bot = Bot(
-    token=BOT_TOKEN,
-    default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
-)
-
+bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher(storage=MemoryStorage())
 
 # تسجيل الراوترات
